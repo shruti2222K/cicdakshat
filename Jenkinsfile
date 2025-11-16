@@ -14,14 +14,16 @@ pipeline {
                 }
             }
         }
-          stage('Docker login') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-pwd', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                    sh "echo $PASS | docker login -u $USER --password-stdin"
-                    sh 'docker push shruti2110/oct302025project:v1'
-                }
-            }
+         stage('Docker login') {
+                 steps {
+                      withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                        sh '''
+                            echo "$PASS" | docker login -u "$USER" --password-stdin
+                           '''
         }
+    }
+}
+
         
           stage('Deploy to k8s'){
             when{ expression {env.GIT_BRANCH == 'master'}}
