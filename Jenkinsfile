@@ -29,12 +29,19 @@ pipeline {
     steps {
         dir('cicdakshat') {
             sh '''
+                echo "Listing k8s directory to check the file exists:"
+                ls -l k8s/
+
+                echo "Applying Kubernetes deployment:"
                 kubectl apply -f k8s/deploymentservice.yaml
+
+                echo "Getting pods in default namespace:"
                 kubectl get pods -n default
             '''
         }
     }
 }
+
 
            
          
