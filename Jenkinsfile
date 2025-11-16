@@ -23,16 +23,18 @@ pipeline {
             }
         }
         
-        stage('Deploy to k8s') {
-           steps {
-               withCredentials([kubeconfigFile(credentialsId: 'kubeconfig-cred', variable: 'KUBECONFIG')]) {
-                 sh """
-                    kubectl set image deployment/my-app-deployment my-app-container=shruti2110/oct302025project:v1
-                    kubectl rollout status deployment/my-app-deployment
-                    """
-             }
-         }
-     }
+          stage('Deploy to k8s'){
+            when{ expression {env.GIT_BRANCH == 'master'}}
+            steps{
+                script{
+                     kubernetesDeploy (configs: 'deploymentservice.yaml' ,kubeconfigId: 'k8sconfigpwd')
+                   
+                }
+            }
+        }
+           
+         
+     
        
   }
 }
