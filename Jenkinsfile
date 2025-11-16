@@ -28,7 +28,8 @@ pipeline {
          stage('Deploy to Kubernetes') {
           steps {
                sh '''
-                 kubectl apply -f deploymentservice.yaml
+                 kubectl apply -f cicdakshat/k8s/deploymentservice.yaml
+
                  kubectl get pods -n default
                 '''
     }
