@@ -25,24 +25,15 @@ pipeline {
 }
 
         
-     stage('Deploy to Kubernetes') {
-    steps {
-        dir('cicdakshat') {
-            sh '''
-                echo "Listing k8s directory to check the file exists:"
-                ls -l k8s/
-
-                echo "Applying Kubernetes deployment:"
-                kubectl apply -f k8s/deploymentservice.yaml
-
-                echo "Getting pods in default namespace:"
-                kubectl get pods -n default
-            '''
+                stage('Deploy to k8s'){
+            when{ expression {env.GIT_BRANCH == 'master'}}
+            steps{
+                script{
+                     kubernetesDeploy (configs: 'deploymentservice.yaml' ,kubeconfigId: 'k8sconfigpwd')
+                   
+                }
+            }
         }
-    }
-}
-
-
            
          
      
