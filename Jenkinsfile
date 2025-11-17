@@ -23,15 +23,20 @@ pipeline {
         }
     }
 }
-stage('Deploy to Kubernetes') {
-    steps {
-        sh '''
-          kubectl apply -f cicdakshat/src/deploymentservice.yaml
-          kubectl get pods -n default
-        '''
-    }
-}
-                   
+                 stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                  # Make sure the YAML exists
+                  if [ ! -f src/deploymentservice.yaml ]; then
+                    echo "deploymentservice.yaml not found!"
+                    exit 1
+                  fi
+
+                  kubectl apply -f src/deploymentservice.yaml
+                  kubectl get pods -n default
+                '''
+            }
+        }
            
          
      
