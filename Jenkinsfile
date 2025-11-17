@@ -23,20 +23,15 @@ pipeline {
         }
     }
 }
-                 stage('Deploy to Kubernetes') {
-            steps {
-                sh '''
-                  # Make sure the YAML exists
-                  if [ ! -f src/deploymentservice.yaml ]; then
-                    echo "deploymentservice.yaml not found!"
-                    exit 1
-                  fi
+                stage('Deploy to Kubernetes') {
+    steps {
+        sh '''
+          kubectl apply -f deploymentservice.yaml
+          kubectl get pods -n default
+        '''
+    }
+}
 
-                  kubectl apply -f src/deploymentservice.yaml
-                  kubectl get pods -n default
-                '''
-            }
-        }
            
          
      
