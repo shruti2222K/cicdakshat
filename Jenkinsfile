@@ -16,13 +16,13 @@ pipeline {
         }
          stage('Docker login') {
                  steps {
-                      withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-                        sh '''
-                            echo "$PASS" | docker login -u "$USER" --password-stdin
-                           '''
+                      withCredentials([string(credentialsId: 'docker-hub-pass', variable: 'PASS')]) {
+    sh 'echo $PASS | docker login -u shruti2110 --password-stdin'
+}
+
         }
     }
-}
+
                 stage('Deploy to Kubernetes') {
     steps {
         sh '''
