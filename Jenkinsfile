@@ -24,14 +24,15 @@ pipeline {
         }
         
         
-        stage('Deploy to k8s'){
-            when{ expression {env.GIT_BRANCH == 'master'}}
-            steps{
-                script{
-                     kubernetesDeploy (configs: 'deploymentservice.yaml' ,kubeconfigId: 'k8sconfigpwd')
-                   
-                }
-            }
-        }
+       
+        stage('Deploy to Kubernetes') {
+    steps {
+        sh '''
+          kubectl apply -f cicdakshat/src/deploymentservice.yaml
+          kubectl get pods -n default
+        '''
+    }
+}
+
     }
 }
