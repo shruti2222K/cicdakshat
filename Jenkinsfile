@@ -23,19 +23,15 @@ pipeline {
         }
     }
 }
-
-        
-              stage('Deploy to Kubernetes') {
+stage('Deploy to Kubernetes') {
     steps {
-        withKubeConfig([credentialsId: 'kube-credentials']) {
-            sh '''
-              kubectl apply -f k8s/deploymentservice.yaml
-              kubectl rollout status deployment/my-deployment
-            '''
-        }
+        sh '''
+          kubectl apply -f cicdakshat/src/deploymentservice.yaml
+          kubectl get pods -n default
+        '''
     }
 }
-
+                   
            
          
      
